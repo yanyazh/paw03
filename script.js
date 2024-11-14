@@ -1,19 +1,8 @@
 (function () {
-  // const example = document.getElementById("example");
-  const cw1 = document.getElementById("cw1");
-  const cw2 = document.getElementById("cw2");
-  const cw3 = document.getElementById("cw3");
+  // const cw1 = document.getElementById("cw1");
+  // const cw2 = document.getElementById("cw2");
+  // const cw3 = document.getElementById("cw3");
   const answer = document.getElementById("answer");
-
-  // example.addEventListener("click", function () {
-  //   fetch("https://jsonplaceholder.typicode.com/posts")
-  //     .then((response) => response.json())
-  //     .then((array) => {
-  //       answer.innerHTML = "";
-  //       console.log(array);
-  //       answer.innerHTML = JSON.stringify(array);
-  //     });
-  // });
 
   function showLoading() {
     document.getElementById("loadingModal").style.display = 'block';
@@ -25,34 +14,8 @@
       document.getElementById("loadingModal").style.display = 'none';
     }, 500); // 3000 milliseconds = 3 seconds
   }
-  
 
-  // document.getElementById("getPosts1").addEventListener("click", function () {
-  //   showLoading(); // Pokaż okno "Loading..."
-  
-  //   fetch("https://restcountries.com/v3.1/capital/Warsaw")
-  //     .then((response) => response.json())
-  //     .then((posts) => {
-  //       hideLoading(); // Ukryj okno "Loading..."
-  //       document.getElementById("answer").innerHTML = '';
-  //       console.log(posts);
-  
-  //       array.forEach(post => {
-  //         postList += `
-  //           <li>
-  //             <th>${post.Name}</th>  <!-- Tytuł postu -->
-  //             <th>${post.Capital}</th>     <!-- Treść postu -->
-  //             <th>${post.Population}</th>
-  //             <th>${post.Region}</th>
-  //             <th>${post.Subregion}</th>
-
-  //           </li>
-  //         `;
-  //       });
-  //       document.getElementById("answer").appendChild(postContainer);
-  // });
-
-  document.getElementById("getPosts").addEventListener("click", function () {
+  document.getElementById("Cm3_1").addEventListener("click", function () {
     showLoading(); // Pokaż okno "Loading..."
   
     fetch("https://restcountries.com/v3.1/capital/Warsaw")
@@ -98,7 +61,7 @@
   });
   
 
-  document.getElementById("getSinglePost").addEventListener("click", function () {
+  document.getElementById("Cm3_2").addEventListener("click", function () {
     showLoading(); // Show "Loading..." modal
 
     // Replace <YOUR_API_TOKEN> with your actual NOAA API token
@@ -202,7 +165,7 @@ document.getElementById("getLocations").addEventListener("click", function () {
 
   
 
-document.getElementById("createPost").addEventListener("click", function () {
+document.getElementById("Cm3_22").addEventListener("click", function () {
   showLoading(); // Show "Loading..." modal
 
   // Replace <YOUR_API_TOKEN> with your actual NOAA API token
@@ -226,7 +189,7 @@ document.getElementById("createPost").addEventListener("click", function () {
 
       // Create the table headers
       const headerRow = document.createElement("tr");
-      const headers = ["Station ID", "Name", "State", "Latitude", "Longitude"];
+      const headers = ["Station ID", "Name", "Data Coverage", "Max Date", "Min Date"];
       headers.forEach((headerText) => {
           const th = document.createElement("th");
           th.textContent = headerText;
@@ -239,24 +202,24 @@ document.getElementById("createPost").addEventListener("click", function () {
           const row = document.createElement("tr");
 
           const stationId = document.createElement("td");
-          stationId.textContent = locations.id;
+          stationId.textContent = station.id;
           row.appendChild(stationId);
 
-          // const name = document.createElement("td");
-          // name.textContent = station.name || "N/A";
-          // row.appendChild(name);
+          const name = document.createElement("td");
+          name.textContent = station.name || "N/A";
+          row.appendChild(name);
 
-          // const state = document.createElement("td");
-          // state.textContent = station.state || "N/A";
-          // row.appendChild(state);
+          const datacoverage = document.createElement("td");
+          datacoverage.textContent = station.datacoverage || "N/A";
+          row.appendChild(datacoverage);
 
-          // const latitude = document.createElement("td");
-          // latitude.textContent = station.latitude || "N/A";
-          // row.appendChild(latitude);
+          const maxdate = document.createElement("td");
+          maxdate.textContent = station.maxdate || "N/A";
+          row.appendChild(maxdate);
 
-          // const longitude = document.createElement("td");
-          // longitude.textContent = station.longitude || "N/A";
-          // row.appendChild(longitude);
+          const mindate = document.createElement("td");
+          mindate.textContent = station.mindate || "N/A";
+          row.appendChild(mindate);
 
           // Append the row to the table
           table.appendChild(row);
@@ -271,40 +234,5 @@ document.getElementById("createPost").addEventListener("click", function () {
       console.error("Error fetching station data:", error);
   });
 });
-
-  document.getElementById("getMyPosts").addEventListener("click", function () {
-    showLoading(); // Pokaż okno "Loading..."
-  
-    fetch("https://my-json-server.typicode.com/yanyazh/appweb02/posts")
-      .then((response) => response.json())
-      .then((posts) => {
-        hideLoading(); // Ukryj okno "Loading..."
-        document.getElementById("answer").innerHTML = '';
-        console.log(posts);
-  
-        posts.forEach((post) => {
-          const postContainer = document.createElement("div");
-          postContainer.classList.add("post");
-  
-          const title = document.createElement("h3");
-          title.textContent = post.title;
-  
-          const body = document.createElement("p");
-          body.textContent = post.body;
-  
-          postContainer.appendChild(title);
-          postContainer.appendChild(body);
-  
-          document.getElementById("answer").appendChild(postContainer);
-        });
-      })
-      .catch((error) => {
-        hideLoading(); // Ukryj okno w przypadku błędu
-        document.getElementById("answer").innerHTML = 'Error loading posts. Please try again later.';
-        console.error("Error fetching posts:", error);
-      });
-  });
-
-
 
 }());
