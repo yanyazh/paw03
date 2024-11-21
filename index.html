@@ -15,20 +15,50 @@
           <p>Loading...</p>
         </div>
       </div>
-      <!-- <div class="button-container">
-        <button id="example" disabled>...</button>
-      </div> -->
       <div class="button-container">
         <button id="Cm3_1">Cm3_1 - Pobierz wszystko z Warsaw</button>
         <button id="Cm3_2">Cm3_2 - Pobierz stacje</button>
         <button id="Cm3_22">Cm3_2.2 - Pobierz stacje /locations</button>
       </div>
       <div class="button-container">
+        
+        <div>
+          <label for="datasetId">Dataset ID:</label>
+          <input type="text" id="datasetId" placeholder="e.g., GHCND" />
+      
+          <label for="locationId">Location ID:</label>
+          <input type="text" id="locationId" placeholder="e.g., ZIP:28801" />
+      
+          <label for="startDate">Start Date:</label>
+          <input type="date" id="startDate" />
+      
+          <label for="endDate">End Date:</label>
+          <input type="date" id="endDate" />
+          <button id="Cm3_23">Cm3_2.3</button>
+        </div>
+        <div id="answer"></div>
+      </div>
+      <div class="button-container">
         <button id="getLocations">Cm3_2.2 - Pobierz wszystkie dane z /locations</button>
       </div>
-      <!-- <div class="button-container">
-        <button id="getMyPosts" disabled>...</button>
-      </div> -->
+
+      <div class="button-container">
+        <div>
+          <button id="Cm3_31">Get Random GIF</button>
+        </div>
+        
+        <div>
+            <input type="text" id="searchQuery" placeholder="Search for GIFs" />
+            <button id="Cm3_32">Search GIFs</button>
+        </div>
+        
+        <div>
+            <button id="prevPage">Previous Page</button>
+            <button id="nextPage">Next Page</button>
+        </div>
+        
+        <div id="gifContainer" style="margin-top: 50px;"></div>
+      </div>
       <div id="answer"></div>
       <script src="script.js"></script>
     </div>

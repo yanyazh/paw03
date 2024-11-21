@@ -1,7 +1,4 @@
 (function () {
-  // const cw1 = document.getElementById("cw1");
-  // const cw2 = document.getElementById("cw2");
-  // const cw3 = document.getElementById("cw3");
   const answer = document.getElementById("answer");
 
   function showLoading() {
@@ -234,5 +231,168 @@ document.getElementById("Cm3_22").addEventListener("click", function () {
       console.error("Error fetching station data:", error);
   });
 });
+
+document.getElementById("Cm3_23").addEventListener("click", function () {
+  showLoading(); // Pokaż okno "Loading..."
+
+  // Pobierz parametry od użytkownika
+  const datasetId = document.getElementById("datasetId").value; // np. GHCND
+  const locationId = document.getElementById("locationId").value; // np. ZIP:28801
+  const startDate = document.getElementById("startDate").value; // np. 2010-05-01
+  const endDate = document.getElementById("endDate").value; // np. 2010-05-01
+
+  // klucz API NOAA
+  const token = "zPRIHeyTFWiivikhYLEVtGYIAhyNpnrq";
+  const url = `https://www.ncei.noaa.gov/cdo-web/api/v2/data?datasetid=${datasetId}&locationid=${locationId}&startdate=${startDate}&enddate=${endDate}`;
+
+  fetch(url, {
+      method: "GET",
+      headers: {
+          "token": token
+      }
+  })
+  .then((response) => response.json())
+  .then((data) => {
+      hideLoading(); // Ukryj okno "Loading..."
+      document.getElementById("answer").innerHTML = '';
+
+      // Stwórz tabelę
+      const table = document.createElement("table");
+      table.classList.add("data-table");
+
+      // Nagłówki tabeli
+      const headerRow = document.createElement("tr");
+      const headers = ["Date", "Data Type", "Value"];
+      headers.forEach((headerText) => {
+          const th = document.createElement("th");
+          th.textContent = headerText;
+          headerRow.appendChild(th);
+      });
+      table.appendChild(headerRow);
+
+      // Przetwarzaj dane i wypełniaj wiersze tabeli
+      if (data.results && data.results.length > 0) {
+          data.results.forEach((entry) => {
+              const row = document.createElement("tr");
+
+              const date = document.createElement("td");
+              date.textContent = entry.date || "N/A";
+              row.appendChild(date);
+
+              const dataType = document.createElement("td");
+              dataType.textContent = entry.datatype || "N/A";
+              row.appendChild(dataType);
+
+              const value = document.createElement("td");
+              value.textContent = entry.value || "N/A";
+              row.appendChild(value);
+
+              table.appendChild(row);
+          });
+      } else {
+          const noDataRow = document.createElement("tr");
+          const noDataCell = document.createElement("td");
+          noDataCell.setAttribute("colspan", 3);
+          noDataCell.textContent = "No data available for the given parameters.";
+          noDataRow.appendChild(noDataCell);
+          table.appendChild(noDataRow);
+      }
+
+      // Wyświetl tabelę w "answer"
+      document.getElementById("answer").appendChild(table);
+  })
+  .catch((error) => {
+      hideLoading(); // Ukryj okno w przypadku błędu
+      document.getElementById("answer").innerHTML = 'Error fetching data. Please check your parameters and try again.';
+      console.error("Error fetching data:", error);
+  });
+});
+
+
+document.getElementById("Cm3_31").addEventListener("click", function () {
+  const apiKey = "9nkVm5hVFaWVPUbqd6jKyZ3ukMGEC81l"; // klucz API
+  const url = `https://api.giphy.com/v1/gifs/random?api_key=${apiKey}&rating=g`;
+
+  fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+          document.getElementById("gifContainer").innerHTML = ''; // Wyczyść wcześniej wyświetlone dane
+
+          const img = document.createElement("img");
+          img.src = data.data.images.original.url; // URL do losowego GIFa
+          img.alt = "Random GIF";
+
+          document.getElementById("gifContainer").appendChild(img);
+      })
+      .catch((error) => {
+          console.error("Error fetching random GIF:", error);
+          document.getElementById("gifContainer").innerHTML = 'Error fetching GIF.';
+      });
+});
+
+document.getElementById("Cm3_32").addEventListener("click", function () {
+  const apiKey = "9nkVm5hVFaWVPUbqd6jKyZ3ukMGEC81l"; // klucz API
+  const query = document.getElementById("searchQuery").value; // Pobierz frazę wyszukiwania
+  const url = `https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${query}&limit=9&offset=0&rating=g`;
+
+  fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+          document.getElementById("gifContainer").innerHTML = ''; // Wyczyść wcześniej wyświetlone dane
+
+          data.data.forEach((gif) => {
+              const img = document.createElement("img");
+              img.src = gif.images.fixed_height.url; // URL do znalezionego GIFa
+              img.alt = gif.title;
+
+              document.getElementById("gifContainer").appendChild(img);
+          });
+      })
+      .catch((error) => {
+          console.error("Error searching GIFs:", error);
+          document.getElementById("gifContainer").innerHTML = 'Error searching GIFs.';
+      });
+});
+
+let currentPage = 0;
+
+document.getElementById("nextPage").addEventListener("click", function () {
+    currentPage += 1;
+    searchGifsWithPagination(currentPage);
+});
+
+document.getElementById("prevPage").addEventListener("click", function () {
+    if (currentPage > 0) {
+        currentPage -= 1;
+        searchGifsWithPagination(currentPage);
+    }
+});
+
+function searchGifsWithPagination(page) {
+    const apiKey = "9nkVm5hVFaWVPUbqd6jKyZ3ukMGEC81l"; // klucz API
+    const query = document.getElementById("searchQuery").value; // Pobierz frazę wyszukiwania
+    const limit = 9; // Liczba wyników na stronę
+    const offset = page * limit; // Oblicz przesunięcie na podstawie strony
+    const url = `https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${query}&limit=${limit}&offset=${offset}&rating=g`;
+
+    fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+            document.getElementById("gifContainer").innerHTML = ''; // Wyczyść wcześniej wyświetlone dane
+
+            data.data.forEach((gif) => {
+                const img = document.createElement("img");
+                img.src = gif.images.fixed_height.url; // URL do znalezionego GIFa
+                img.alt = gif.title;
+
+                document.getElementById("gifContainer").appendChild(img);
+            });
+        })
+        .catch((error) => {
+            console.error("Error fetching GIFs with pagination:", error);
+            document.getElementById("gifContainer").innerHTML = 'Error fetching GIFs.';
+        });
+}
+
 
 }());
